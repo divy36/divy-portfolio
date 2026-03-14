@@ -1,388 +1,2051 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Divy Chauhan | Portfolio</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Divy Chauhan | Quantitative Analyst</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+/* =============================================
+   ROOT VARIABLES & THEME
+============================================= */
+:root {
+  --bg: #050A14;
+  --bg2: #0D1626;
+  --bg3: #0a1220;
+  --text: #E8EDF7;
+  --text-muted: #6B7FA3;
+  --blue: #3B82F6;
+  --blue-glow: rgba(59,130,246,0.25);
+  --red: #EF4444;
+  --red-glow: rgba(239,68,68,0.2);
+  --border: #1E3A5F;
+  --card: #0D1626;
+  --particle-opacity: 0.4;
+  --scrollbar-color: #1E3A5F;
+}
+
+[data-theme="light"] {
+  --bg: #F8F9FC;
+  --bg2: #FFFFFF;
+  --bg3: #F0F2F8;
+  --text: #0A0F1E;
+  --text-muted: #4A5568;
+  --blue: #0047CC;
+  --blue-glow: rgba(0,71,204,0.15);
+  --red: #CC1A1A;
+  --red-glow: rgba(204,26,26,0.12);
+  --border: #D1DCF0;
+  --card: #FFFFFF;
+  --particle-opacity: 0.15;
+  --scrollbar-color: #CBD5E0;
+}
+
+/* =============================================
+   RESET & BASE
+============================================= */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  overflow-x: hidden;
+  transition: background 0.3s, color 0.3s;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--scrollbar-color); border-radius: 2px; }
+
+/* =============================================
+   LOADING SCREEN
+============================================= */
+#loader {
+  position: fixed;
+  inset: 0;
+  background: #050A14;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  transition: opacity 0.5s ease;
+}
+
+#loader .loader-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.4rem;
+  color: #3B82F6;
+  letter-spacing: 0.15em;
+}
+
+#loader .loader-bar-wrap {
+  width: 280px;
+  height: 2px;
+  background: #1E3A5F;
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+#loader .loader-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #3B82F6, #60A5FA);
+  width: 0%;
+  border-radius: 1px;
+  transition: width 0.05s linear;
+}
+
+#loader .loader-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: #6B7FA3;
+  letter-spacing: 0.1em;
+}
+
+/* =============================================
+   CUSTOM CURSOR
+============================================= */
+#cursor-dot, #cursor-ring {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s;
+}
+
+#cursor-dot {
+  width: 6px; height: 6px;
+  background: var(--blue);
+}
+
+#cursor-ring {
+  width: 28px; height: 28px;
+  border: 1.5px solid var(--blue);
+  opacity: 0.5;
+  transition: width 0.2s, height 0.2s, opacity 0.3s;
+}
+
+body:hover #cursor-dot, body:hover #cursor-ring { opacity: 1; }
+
+/* =============================================
+   THREE.JS CANVAS BACKGROUND
+============================================= */
+#bg-canvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* =============================================
+   NAVBAR
+============================================= */
+#navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 1.1rem 0;
+  transition: background 0.3s, backdrop-filter 0.3s, border-bottom 0.3s;
+}
+
+#navbar.scrolled {
+  background: rgba(5,10,20,0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+
+[data-theme="light"] #navbar.scrolled {
+  background: rgba(248,249,252,0.85);
+}
+
+.nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-logo {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--blue);
+  letter-spacing: 0.05em;
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2.2rem;
+  align-items: center;
+  list-style: none;
+}
+
+.nav-links a {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  font-weight: 500;
+  text-decoration: none;
+  position: relative;
+  transition: color 0.2s;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -3px; left: 0;
+  width: 0; height: 1.5px;
+  background: var(--blue);
+  transition: width 0.25s ease;
+}
+
+.nav-links a:hover { color: var(--text); }
+.nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+.nav-links a.active { color: var(--text); }
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+#theme-toggle {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+#theme-toggle:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+  background: var(--blue-glow);
+}
+
+/* =============================================
+   HERO SECTION
+============================================= */
+#hero {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 8rem 2rem 4rem;
+}
+
+.hero-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--blue);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 1.2rem;
+  opacity: 0;
+  animation: fadeUp 0.6s 1.8s forwards;
+}
+
+.hero-headline {
+  font-size: clamp(2.8rem, 6vw, 5rem);
+  font-weight: 700;
+  line-height: 1.08;
+  margin-bottom: 0.5rem;
+  opacity: 0;
+  animation: fadeUp 0.6s 2s forwards;
+}
+
+.hero-headline .name { display: block; }
+
+.hero-headline .role-wrap {
+  display: block;
+  color: var(--blue);
+  min-height: 1.2em;
+}
+
+#typewriter { border-right: 3px solid var(--blue); padding-right: 4px; }
+
+.hero-bio {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  max-width: 520px;
+  margin: 1.5rem 0 2.2rem;
+  opacity: 0;
+  animation: fadeUp 0.6s 2.2s forwards;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeUp 0.6s 2.4s forwards;
+  margin-bottom: 3rem;
+}
+
+.btn-primary {
+  background: var(--blue);
+  color: white;
+  padding: 0.75rem 1.8rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.92rem;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.2s;
+  box-shadow: 0 0 24px var(--blue-glow);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 36px var(--blue-glow);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--text);
+  padding: 0.75rem 1.8rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.92rem;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.2s;
+}
+
+.btn-outline:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+  transform: translateY(-2px);
+}
+
+/* Ticker */
+.ticker-wrap {
+  opacity: 0;
+  animation: fadeUp 0.6s 2.6s forwards;
+  overflow: hidden;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 0.55rem 0;
+  position: relative;
+}
+
+.ticker-wrap::before, .ticker-wrap::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 60px;
+  z-index: 2;
+}
+
+.ticker-wrap::before { left: 0; background: linear-gradient(90deg, var(--bg), transparent); }
+.ticker-wrap::after { right: 0; background: linear-gradient(-90deg, var(--bg), transparent); }
+
+.ticker-track {
+  display: flex;
+  gap: 3rem;
+  animation: ticker 28s linear infinite;
+  width: max-content;
+}
+
+.ticker-item {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.ticker-sym { color: var(--text); font-weight: 600; }
+.ticker-price { color: var(--text-muted); }
+.up { color: #22C55E; }
+.down { color: var(--red); }
+
+@keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+/* =============================================
+   SECTION SHARED
+============================================= */
+section { position: relative; z-index: 1; padding: 6rem 0; }
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--blue);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.section-title {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 700;
+  margin-bottom: 0.8rem;
+  position: relative;
+  display: inline-block;
+}
+
+.section-title::after {
+  content: '';
+  display: block;
+  width: 40px; height: 2px;
+  background: var(--blue);
+  margin-top: 0.5rem;
+}
+
+/* Reveal animation */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* =============================================
+   ABOUT SECTION
+============================================= */
+#about { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 4rem;
+  align-items: start;
+  margin-top: 3rem;
+}
+
+.avatar-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.avatar {
+  width: 220px; height: 220px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #1E3A5F 0%, #0D1626 50%, #1a2a4a 100%);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 4.5rem;
+  font-weight: 700;
+  color: var(--blue);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 40px var(--blue-glow);
+}
+
+.avatar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 30%, rgba(59,130,246,0.15), transparent 60%);
+}
+
+.avatar-status {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.status-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #22C55E;
+  box-shadow: 0 0 6px #22C55E;
+  animation: pulse-green 2s infinite;
+}
+
+@keyframes pulse-green {
+  0%, 100% { opacity: 1; } 50% { opacity: 0.4; }
+}
+
+.about-text h3 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.about-text p {
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+  font-size: 0.97rem;
+}
+
+.about-text strong { color: var(--text); }
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-top: 2.5rem;
+}
+
+.stat-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.2rem;
+  text-align: center;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.stat-card:hover {
+  border-color: var(--blue);
+  box-shadow: 0 0 20px var(--blue-glow);
+}
+
+.stat-number {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--blue);
+  display: block;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.2rem;
+}
+
+/* =============================================
+   SKILLS SECTION
+============================================= */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+
+.skill-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.8rem;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+
+.skill-card:hover {
+  border-color: var(--blue);
+  box-shadow: 0 0 24px var(--blue-glow);
+  transform: translateY(-3px);
+}
+
+.skill-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1.4rem;
+}
+
+.skill-icon {
+  width: 38px; height: 38px;
+  border-radius: 8px;
+  background: rgba(59,130,246,0.1);
+  border: 1px solid rgba(59,130,246,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.skill-card-header h4 {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.skill-row {
+  margin-bottom: 0.9rem;
+}
+
+.skill-row-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.35rem;
+}
+
+.skill-name { font-size: 0.83rem; color: var(--text-muted); }
+.skill-pct {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--blue);
+}
+
+.skill-track {
+  height: 3px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+[data-theme="light"] .skill-track { background: rgba(0,0,0,0.08); }
+
+.skill-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--blue), #60A5FA);
+  border-radius: 2px;
+  width: 0%;
+  transition: width 1s ease;
+}
+
+/* =============================================
+   PROJECTS SECTION
+============================================= */
+#projects { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+
+.project-card {
+  perspective: 1000px;
+  height: 280px;
+  cursor: pointer;
+}
+
+.project-card-inner {
+  position: relative;
+  width: 100%; height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.project-card:hover .project-card-inner { transform: rotateY(180deg); }
+
+.card-front, .card-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: 12px;
+  padding: 1.8rem;
+  border: 1px solid var(--border);
+  background: var(--card);
+}
+
+.card-back {
+  transform: rotateY(180deg);
+  background: var(--blue);
+  border-color: var(--blue);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-front:hover, .card-back:hover {
+  box-shadow: 0 0 28px var(--blue-glow);
+}
+
+.project-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--blue);
+  margin-bottom: 0.8rem;
+  letter-spacing: 0.1em;
+}
+
+.card-back .project-num { color: rgba(255,255,255,0.7); }
+
+.card-front h3 {
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: var(--blue);
+  margin-bottom: 0.6rem;
+}
+
+.card-back h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 0.6rem;
+}
+
+.card-front p, .card-back p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.card-back p { color: rgba(255,255,255,0.85); }
+
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 1rem;
+}
+
+.project-tags span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  background: rgba(59,130,246,0.1);
+  border: 1px solid rgba(59,130,246,0.2);
+  color: var(--blue);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+.card-back .project-tags span {
+  background: rgba(255,255,255,0.15);
+  border-color: rgba(255,255,255,0.3);
+  color: white;
+}
+
+.project-metric {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: #22C55E;
+  margin-top: 0.8rem;
+}
+
+.card-back .project-metric { color: #86EFAC; }
+
+.btn-gh {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: white;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background 0.2s;
+  width: fit-content;
+}
+
+.btn-gh:hover { background: rgba(255,255,255,0.25); }
+
+/* =============================================
+   RESEARCH SECTION
+============================================= */
+.research-list {
+  margin-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.research-item {
+  display: grid;
+  grid-template-columns: 120px 1fr auto;
+  gap: 1.5rem;
+  align-items: center;
+  padding: 1.4rem 1.8rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--card);
+  transition: background 0.2s;
+}
+
+.research-item:last-child { border-bottom: none; }
+
+.research-item:hover { background: rgba(59,130,246,0.04); }
+
+.research-date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.research-content h4 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+
+.research-content p {
+  font-size: 0.83rem;
+  color: var(--text-muted);
+}
+
+.research-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  background: rgba(59,130,246,0.1);
+  border: 1px solid rgba(59,130,246,0.2);
+  color: var(--blue);
+  white-space: nowrap;
+}
+
+.research-link {
+  font-size: 0.82rem;
+  color: var(--blue);
+  text-decoration: none;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: opacity 0.2s;
+}
+
+.research-link:hover { opacity: 0.7; }
+
+/* =============================================
+   CONTACT SECTION
+============================================= */
+#contact { background: var(--bg2); border-top: 1px solid var(--border); }
+
+.contact-wrap {
+  max-width: 700px;
+  margin: 3rem auto 0;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 3rem;
+  box-shadow: 0 0 60px var(--blue-glow);
+}
+
+.contact-headline {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.contact-sub {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+}
+
+.contact-icons {
+  display: flex;
+  gap: 0.8rem;
+  margin-bottom: 2rem;
+}
+
+.contact-icon-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1.1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.83rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: all 0.2s;
+  background: var(--bg);
+}
+
+.contact-icon-btn:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+  box-shadow: 0 0 16px var(--blue-glow);
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.form-group label {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.05em;
+}
+
+.form-group input, .form-group textarea {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.9rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+  resize: none;
+}
+
+.form-group input:focus, .form-group textarea:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px var(--blue-glow);
+}
+
+.form-group textarea { height: 110px; }
+
+.btn-send {
+  background: var(--blue);
+  color: white;
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  align-self: flex-start;
+  box-shadow: 0 0 20px var(--blue-glow);
+}
+
+.btn-send:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 32px var(--blue-glow);
+}
+
+/* =============================================
+   FOOTER
+============================================= */
+footer {
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid var(--border);
+  padding: 1.8rem 2rem;
+  text-align: center;
+}
+
+.footer-main {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.footer-sub {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  opacity: 0.6;
+  margin-top: 0.3rem;
+  letter-spacing: 0.05em;
+}
+
+/* =============================================
+   RESPONSIVE
+============================================= */
+/* =============================================
+   EXPERIENCE & EDUCATION
+============================================= */
+#experience { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+.exp-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  margin-top: 3rem;
+}
+
+.exp-col-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.exp-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.blue-dot { background: var(--blue); box-shadow: 0 0 8px var(--blue); }
+.red-dot { background: var(--red); box-shadow: 0 0 8px var(--red); }
+
+.exp-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.2rem;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+
+.exp-card:hover {
+  border-color: var(--blue);
+  box-shadow: 0 0 20px var(--blue-glow);
+  transform: translateY(-2px);
+}
+
+.exp-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.exp-logo {
+  width: 36px; height: 36px;
+  object-fit: contain;
+  border-radius: 6px;
+  background: white;
+  padding: 3px;
+  flex-shrink: 0;
+}
+
+.exp-logo-placeholder {
+  width: 36px; height: 36px;
+  background: rgba(59,130,246,0.15);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--blue);
+  flex-shrink: 0;
+}
+
+.exp-meta { flex: 1; min-width: 140px; }
+.exp-meta h4 { font-size: 0.95rem; font-weight: 600; line-height: 1.3; }
+.exp-org { font-size: 0.8rem; color: var(--blue); margin-top: 0.1rem; }
+
+.exp-date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  margin-left: auto;
+}
+
+.exp-grade {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: #22C55E;
+  margin-bottom: 0.6rem;
+}
+
+.exp-bullets {
+  list-style: none;
+  margin-bottom: 1rem;
+}
+
+.exp-bullets li {
+  font-size: 0.83rem;
+  color: var(--text-muted);
+  padding-left: 1rem;
+  position: relative;
+  margin-bottom: 0.35rem;
+  line-height: 1.55;
+}
+
+.exp-bullets li::before {
+  content: '›';
+  position: absolute;
+  left: 0;
+  color: var(--blue);
+  font-weight: 700;
+}
+
+.exp-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.exp-tags span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  background: rgba(59,130,246,0.08);
+  border: 1px solid rgba(59,130,246,0.15);
+  color: var(--text-muted);
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+}
+
+/* =============================================
+   CERTIFICATIONS
+============================================= */
+#certifications { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+.certs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+
+.cert-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.6rem;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+
+.cert-card:hover {
+  border-color: var(--blue);
+  box-shadow: 0 0 24px var(--blue-glow);
+  transform: translateY(-3px);
+}
+
+.cert-header {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.cert-logo {
+  width: 36px; height: 36px;
+  object-fit: contain;
+  border-radius: 6px;
+  background: white;
+  padding: 3px;
+  flex-shrink: 0;
+}
+
+.cert-issuer-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.cert-issuer {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.cert-date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--blue);
+}
+
+.cert-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.6rem;
+  line-height: 1.35;
+}
+
+.cert-desc {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.cert-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.cert-tags span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  background: rgba(59,130,246,0.08);
+  border: 1px solid rgba(59,130,246,0.15);
+  color: var(--text-muted);
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+}
+
+@media (max-width: 900px) {
+  .about-grid { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .skills-grid { grid-template-columns: 1fr; }
+  .projects-grid { grid-template-columns: 1fr; }
+  .research-item { grid-template-columns: 1fr; gap: 0.5rem; }
+  .form-row { grid-template-columns: 1fr; }
+  .exp-columns { grid-template-columns: 1fr; }
+  .certs-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  #cursor-dot, #cursor-ring { display: none; }
+  .hero-headline { font-size: 2.6rem; }
+  .contact-wrap { padding: 1.8rem; }
+  .contact-icons { flex-wrap: wrap; }
+}
+</style>
 </head>
 <body>
 
-  <!-- Navigation -->
-  <nav id="navbar">
-    <div class="nav-container">
-      <a href="#hero" class="nav-logo">DC</a>
-      <ul class="nav-links">
-        <li><a href="#about">About</a></li>
-        <li><a href="#education">Education</a></li>
-        <li><a href="#experience">Experience</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#contact" class="nav-cta">Contact</a></li>
-      </ul>
-      <button class="hamburger" id="hamburger">&#9776;</button>
-    </div>
-  </nav>
+<!-- ============ LOADER ============ -->
+<div id="loader">
+  <div class="loader-name">[ Divy Chauhan ]</div>
+  <div class="loader-bar-wrap"><div class="loader-bar" id="loader-bar"></div></div>
+  <div class="loader-text" id="loader-text">Initialising models... 0%</div>
+</div>
 
-  <!-- Hero -->
-  <section id="hero">
-    <div class="hero-content">
-      <p class="hero-tag">MSc Computational Finance · King's College London</p>
-      <h1>Divy <span class="accent">Chauhan</span></h1>
-      <p class="hero-subtitle">Quantitative Analyst &amp; Software Engineer bridging financial modelling, machine learning, and high-integrity systems.</p>
-      <div class="hero-buttons">
-        <a href="#projects" class="btn btn-primary">View Projects</a>
-        <a href="#contact" class="btn btn-outline">Get in Touch</a>
-      </div>
-      <div class="hero-stats">
-        <div class="stat"><span>2+</span><p>Years at Capgemini</p></div>
-        <div class="stat"><span>30%</span><p>Efficiency gain via automation</p></div>
-        <div class="stat"><span>3</span><p>Industry simulations</p></div>
-        <div class="stat"><span>30+</span><p>Students mentored</p></div>
-      </div>
-    </div>
-    <div class="hero-visual">
-      <div class="orb orb1"></div>
-      <div class="orb orb2"></div>
-      <div class="code-card">
-        <div class="code-bar"><span></span><span></span><span></span></div>
-        <pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
-<span class="kw">from</span> scipy.stats <span class="kw">import</span> norm
+<!-- ============ CURSOR ============ -->
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
 
-<span class="fn">def</span> <span class="name">black_scholes</span>(S, K, T, r, σ):
-    d1 = (np.log(S/K) +
-         (r + σ**2/2)*T) / (σ*np.sqrt(T))
-    d2 = d1 - σ * np.sqrt(T)
-    <span class="kw">return</span> S*norm.cdf(d1) - K*np.exp(
-           -r*T)*norm.cdf(d2)</code></pre>
-      </div>
-    </div>
-    <a href="#about" class="scroll-down">&#x2193;</a>
-  </section>
+<!-- ============ CANVAS ============ -->
+<canvas id="bg-canvas"></canvas>
 
-  <!-- About -->
-  <section id="about">
-    <div class="container">
-      <h2 class="section-title">About Me</h2>
-      <div class="about-grid">
-        <div class="about-text">
-          <p>I'm a <strong>MSc Computational Finance</strong> candidate at King's College London, with a background in high-integrity software engineering at Capgemini. My work sits at the intersection of quantitative finance, machine learning, and robust engineering.</p>
-          <p>At Capgemini I delivered mission-critical Ada/SPARK code in zero-defect regulatory frameworks, co-built automation tooling that improved team efficiency by 30%, and communicated data-driven findings to senior stakeholders.</p>
-          <p>Now I'm applying that rigour to financial modelling — building derivatives pricing engines, systematic trading strategies, and credit risk frameworks.</p>
-          <div class="about-tags">
-            <span>Quantitative Finance</span>
-            <span>Machine Learning</span>
-            <span>Software Engineering</span>
-            <span>Risk Modelling</span>
-            <span>Bloomberg Terminal</span>
-          </div>
-        </div>
-        <div class="about-cards">
-          <div class="info-card">
-            <div class="icon">&#127891;</div>
-            <h4>Education</h4>
-            <p>MSc Computational Finance<br/>King's College London</p>
-          </div>
-          <div class="info-card">
-            <div class="icon">&#128205;</div>
-            <h4>Location</h4>
-            <p>London, United Kingdom</p>
-          </div>
-          <div class="info-card">
-            <div class="icon">&#128172;</div>
-            <h4>Languages</h4>
-            <p>English · Gujarati · Hindi</p>
-          </div>
-          <div class="info-card">
-            <div class="icon">&#9971;</div>
-            <h4>Interests</h4>
-            <p>Hiking · Chess · Go-Karting · Podcasts</p>
-          </div>
+<!-- ============ NAVBAR ============ -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#hero" class="nav-logo">[ DC ]</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#certifications">Certs</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+      <button id="theme-toggle" title="Toggle theme">☀</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section id="hero">
+  <p class="hero-tag">// MSc Computational Finance · King's College London</p>
+  <h1 class="hero-headline">
+    <span class="name">Divy Chauhan</span>
+    <span class="role-wrap"><span id="typewriter"></span></span>
+  </h1>
+  <p class="hero-bio">
+    Bridging quantitative finance, machine learning, and high-integrity engineering.
+    Former Associate Software Engineer at Capgemini — now focused on derivatives modelling,
+    systematic strategies, and building tools that turn data into decisions.
+  </p>
+  <div class="hero-buttons">
+    <a href="#projects" class="btn-primary">View Projects</a>
+    <a href="mailto:divy.chauhan36@gmail.com" class="btn-outline">Download CV</a>
+  </div>
+
+  <!-- Ticker -->
+  <div class="ticker-wrap">
+    <div class="ticker-track" id="ticker-track">
+      <!-- filled by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section id="about">
+  <div class="container">
+    <p class="section-label reveal">// profile</p>
+    <h2 class="section-title reveal">About Me</h2>
+    <div class="about-grid">
+      <div class="avatar-wrap reveal">
+        <div class="avatar">DC</div>
+        <div class="avatar-status">
+          <div class="status-dot"></div>
+          Open to opportunities
         </div>
       </div>
+      <div class="about-text reveal">
+        <h3>Quantitative Analyst & Software Engineer</h3>
+        <p>
+          I'm a <strong>MSc Computational Finance</strong> candidate at King's College London,
+          with a background in mission-critical software engineering at <strong>Capgemini</strong>.
+          My work sits at the intersection of applied mathematics, machine learning, and financial markets.
+        </p>
+        <p>
+          At Capgemini I delivered formally verified <strong>Ada/SPARK</strong> code in zero-defect regulatory frameworks,
+          performed root-cause analysis on large-scale system failures, and co-developed automation tooling
+          that improved team efficiency by <strong>~30%</strong>.
+        </p>
+        <p>
+          Now I'm building derivatives pricing engines, systematic trading strategies, credit risk models,
+          and real-time macro dashboards — applying rigorous engineering discipline to quantitative finance problems.
+        </p>
+        <div class="stats-grid">
+          <div class="stat-card reveal">
+            <span class="stat-number" data-target="5">0</span>
+            <span class="stat-label">Projects Built</span>
+          </div>
+          <div class="stat-card reveal">
+            <span class="stat-number" data-target="3">0</span>
+            <span class="stat-label">Strategies Backtested</span>
+          </div>
+          <div class="stat-card reveal">
+            <span class="stat-number" data-target="2">0</span>
+            <span class="stat-label">Years at Capgemini</span>
+          </div>
+          <div class="stat-card reveal">
+            <span class="stat-number" data-target="30">0</span>
+            <span class="stat-label">Students Mentored</span>
+          </div>
+        </div>
+      </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Education -->
-  <section id="education">
-    <div class="container">
-      <h2 class="section-title">Education</h2>
-      <div class="timeline">
+<!-- ============ EXPERIENCE & EDUCATION ============ -->
+<section id="experience">
+  <div class="container">
+    <p class="section-label reveal">// career & academia</p>
+    <h2 class="section-title reveal">Experience & Education</h2>
 
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-card">
-            <div class="timeline-header">
-              <div>
-                <h3>MSc Computational Finance</h3>
-                <p class="org">King's College London</p>
-              </div>
-              <span class="timeline-date">2025 – Present</span>
+    <div class="exp-columns">
+
+      <!-- WORK -->
+      <div class="exp-col reveal">
+        <h3 class="exp-col-title"><span class="exp-dot blue-dot"></span>Work Experience</h3>
+
+        <div class="exp-card">
+          <div class="exp-header">
+            <img src="https://logo.clearbit.com/capgemini.com" alt="Capgemini" class="exp-logo" onerror="this.style.display='none'"/>
+            <div class="exp-meta">
+              <h4>Associate Software Engineer</h4>
+              <p class="exp-org">Capgemini &mdash; London, UK</p>
             </div>
-            <p class="grade">Expected: Distinction</p>
-            <ul>
-              <li>Quantitative Risk Management, Derivatives Pricing, Liquidity Forecasting, Financial Markets Risk</li>
-              <li>Applied stochastic calculus, Monte Carlo simulations, and time-series modelling to financial datasets</li>
-              <li>Developed machine learning models and systematic trading logic in Python and R</li>
-              <li>Used Bloomberg Terminal for market data extraction and trade analysis</li>
-            </ul>
+            <span class="exp-date">Oct 2023 – Sep 2025</span>
           </div>
+          <ul class="exp-bullets">
+            <li>Delivered formally verified Ada/SPARK code in zero-defect regulatory frameworks for mission-critical systems</li>
+            <li>Co-developed automation tooling improving team efficiency by ~30%</li>
+            <li>Root-cause analysis of large-scale system failures; presented data-driven findings to senior client stakeholders</li>
+            <li>Acted as Onboarding Buddy, accelerating new-joiner integration into team workflows</li>
+          </ul>
+          <div class="exp-tags"><span>Ada/SPARK</span><span>Python</span><span>Formal Verification</span><span>Agile</span></div>
         </div>
 
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-card">
-            <div class="timeline-header">
-              <div>
-                <h3>BSc Computer Science</h3>
-                <p class="org">Brunel University London</p>
-              </div>
-              <span class="timeline-date">2020 – 2023</span>
+        <div class="exp-card">
+          <div class="exp-header">
+            <div class="exp-logo-placeholder">DF</div>
+            <div class="exp-meta">
+              <h4>Software Engineer Trainee</h4>
+              <p class="exp-org">Digital Futures &mdash; London, UK</p>
             </div>
-            <p class="grade">Upper Second Class Honours (2:1)</p>
-            <ul>
-              <li><strong>Final Year Project:</strong> AI-Based Virality Prediction Engine — analysed thousands of high-engagement datasets using NLP, built deep-learning application generating data-driven optimisation recommendations</li>
-            </ul>
-            <p class="alevel">A-Levels: Mathematics (A), Physics (B), Computer Science (B)</p>
+            <span class="exp-date">Jun 2023 – Sep 2023</span>
           </div>
+          <ul class="exp-bullets">
+            <li>Led a team of 4 trainees — sprint planning, task delegation, and code reviews</li>
+            <li>Delivered a full-stack web application using Java and Spring Boot on schedule</li>
+          </ul>
+          <div class="exp-tags"><span>Java</span><span>Spring Boot</span><span>Agile</span><span>Full-Stack</span></div>
         </div>
-
       </div>
-    </div>
-  </section>
 
-  <!-- Experience -->
-  <section id="experience">
-    <div class="container">
-      <h2 class="section-title">Work Experience</h2>
-      <div class="timeline">
+      <!-- EDUCATION -->
+      <div class="exp-col reveal">
+        <h3 class="exp-col-title"><span class="exp-dot red-dot"></span>Education</h3>
 
-        <div class="timeline-item">
-          <div class="timeline-dot accent-dot"></div>
-          <div class="timeline-card">
-            <div class="timeline-header">
-              <div>
-                <h3>Associate Software Engineer</h3>
-                <p class="org">Capgemini &mdash; London, UK</p>
-              </div>
-              <span class="timeline-date">Oct 2023 – Sep 2025</span>
+        <div class="exp-card">
+          <div class="exp-header">
+            <img src="https://logo.clearbit.com/kcl.ac.uk" alt="King's College London" class="exp-logo" onerror="this.style.display='none'"/>
+            <div class="exp-meta">
+              <h4>MSc Computational Finance</h4>
+              <p class="exp-org">King's College London</p>
             </div>
-            <ul>
-              <li>Translated ambiguous client requirements into formally verified Ada/SPARK specifications within zero-defect regulatory frameworks</li>
-              <li>Delivered mission-critical code in high-integrity systems requiring precision and auditability</li>
-              <li>Conducted structured root-cause analysis on recurring system failures using large datasets, identifying systemic risk drivers</li>
-              <li>Co-developed automation tooling improving development efficiency by ~30%</li>
-              <li>Synthesised complex technical findings into commercially focused reports and presented to senior client stakeholders</li>
-              <li>Acted as Onboarding Buddy, accelerating new-joiner integration into team processes</li>
-            </ul>
+            <span class="exp-date">2025 – Present</span>
           </div>
+          <p class="exp-grade">Expected: Distinction</p>
+          <ul class="exp-bullets">
+            <li>Quantitative Risk Management, Derivatives Pricing, Liquidity Forecasting, Financial Markets Risk</li>
+            <li>Stochastic calculus, Monte Carlo simulations, time-series modelling in Python & R</li>
+            <li>Bloomberg Terminal for market data extraction and trade analysis</li>
+          </ul>
+          <div class="exp-tags"><span>Quant Finance</span><span>Python</span><span>Bloomberg</span><span>R</span></div>
         </div>
 
-        <div class="timeline-item">
-          <div class="timeline-dot accent-dot"></div>
-          <div class="timeline-card">
-            <div class="timeline-header">
-              <div>
-                <h3>Software Engineer Trainee</h3>
-                <p class="org">Digital Futures &mdash; London, UK</p>
-              </div>
-              <span class="timeline-date">Jun 2023 – Sep 2023</span>
+        <div class="exp-card">
+          <div class="exp-header">
+            <img src="https://logo.clearbit.com/brunel.ac.uk" alt="Brunel University" class="exp-logo" onerror="this.style.display='none'"/>
+            <div class="exp-meta">
+              <h4>BSc Computer Science</h4>
+              <p class="exp-org">Brunel University London</p>
             </div>
-            <ul>
-              <li>Led a project team of four trainees — sprint planning, task delegation, and code reviews</li>
-              <li>Delivered a full-stack web application using Java and Spring Boot on schedule within an Agile framework</li>
-            </ul>
+            <span class="exp-date">2020 – 2023</span>
           </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- Projects -->
-  <section id="projects">
-    <div class="container">
-      <h2 class="section-title">Projects</h2>
-      <div class="projects-grid">
-
-        <div class="project-card featured">
-          <div class="project-badge">Featured</div>
-          <h3>Algorithmic Strategy Backtester</h3>
-          <p>Modular backtesting framework in Python to evaluate systematic trading strategies on S&P 500 historical data. Implemented Mean Reversion and Momentum strategies with risk-adjusted metrics (Sharpe, Beta, Max Drawdown).</p>
-          <div class="project-tags"><span>Python</span><span>Pandas</span><span>Quantitative Finance</span><span>Trading</span></div>
-        </div>
-
-        <div class="project-card featured">
-          <div class="project-badge">Featured</div>
-          <h3>Black-Scholes Options Pricing Engine</h3>
-          <p>European options pricing tool with full Greek sensitivity analysis. Analysed volatility shifts and time decay impact on hedging exposures and implications for market-makers managing delta and vega risk.</p>
-          <div class="project-tags"><span>Python</span><span>Derivatives</span><span>Greeks</span><span>Risk</span></div>
-        </div>
-
-        <div class="project-card">
-          <h3>Real-Time Macro &amp; Yield Curve Dashboard</h3>
-          <p>Streamlit dashboard integrating live US Treasury yield and inflation data via APIs. Visualised yield curve steepening/flattening to interpret macro regime shifts and connect trends to asset price sensitivity.</p>
-          <div class="project-tags"><span>Python</span><span>Streamlit</span><span>APIs</span><span>Macro</span></div>
-        </div>
-
-        <div class="project-card">
-          <h3>Credit Default Prediction Model</h3>
-          <p>Classification model estimating borrower probability of default using financial ratio data. Applied logistic regression and random forest with feature engineering and cross-validation to support risk-based lending decisions.</p>
-          <div class="project-tags"><span>Python</span><span>Scikit-learn</span><span>Credit Risk</span><span>ML</span></div>
-        </div>
-
-        <div class="project-card">
-          <h3>AI-Based Virality Prediction Engine</h3>
-          <p>Final year project at Brunel — analysed thousands of viral social media posts using NLP. Built deep-learning models identifying behavioural engagement drivers, producing data-driven content recommendations.</p>
-          <div class="project-tags"><span>Python</span><span>NLP</span><span>Deep Learning</span><span>LLMs</span></div>
-        </div>
-
-        <div class="project-card">
-          <h3>JPMorgan Quantitative Research Simulation</h3>
-          <p>Analysed structured loan portfolio to estimate customer probability of default. Applied dynamic programming to transform FICO score distributions into categorical predictors for credit risk exposure.</p>
-          <div class="project-tags"><span>Quantitative Research</span><span>PD Modelling</span><span>Python</span></div>
-        </div>
-
-        <div class="project-card">
-          <h3>Goldman Sachs Risk Job Simulation</h3>
-          <p>Conducted structured financial risk analysis — evaluated leverage, liquidity, and repayment capacity under stressed scenarios. Recommended mitigation strategies balancing risk-return trade-offs.</p>
-          <div class="project-tags"><span>Risk Analysis</span><span>Stress Testing</span><span>Finance</span></div>
-        </div>
-
-        <div class="project-card">
-          <h3>BCG Data Science Simulation</h3>
-          <p>Customer churn analysis for XYZ Analytics. Engineered a Random Forest model achieving 50% recall on churn prediction. Delivered executive summary with actionable insights for senior decision-makers.</p>
-          <div class="project-tags"><span>Python</span><span>Random Forest</span><span>Churn</span><span>BCG</span></div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- Skills -->
-  <section id="skills">
-    <div class="container">
-      <h2 class="section-title">Skills</h2>
-      <div class="skills-grid">
-
-        <div class="skill-category">
-          <h4>Programming &amp; Data</h4>
-          <div class="skill-list">
-            <div class="skill-item"><span>Python</span><div class="skill-bar"><div style="width:95%"></div></div></div>
-            <div class="skill-item"><span>SQL</span><div class="skill-bar"><div style="width:80%"></div></div></div>
-            <div class="skill-item"><span>R</span><div class="skill-bar"><div style="width:75%"></div></div></div>
-            <div class="skill-item"><span>C++</span><div class="skill-bar"><div style="width:65%"></div></div></div>
-            <div class="skill-item"><span>Java</span><div class="skill-bar"><div style="width:70%"></div></div></div>
-            <div class="skill-item"><span>Ada/SPARK</span><div class="skill-bar"><div style="width:85%"></div></div></div>
-          </div>
-        </div>
-
-        <div class="skill-category">
-          <h4>Quantitative Finance</h4>
-          <div class="skill-pills">
-            <span>Monte Carlo Simulation</span>
-            <span>Stochastic Calculus</span>
-            <span>Black-Scholes</span>
-            <span>Greeks Analysis</span>
-            <span>VaR &amp; CVaR</span>
-            <span>Yield Curve Analysis</span>
-            <span>Time-Series Analysis</span>
-            <span>Derivatives Pricing</span>
-            <span>Systematic Trading</span>
-            <span>Stress Testing</span>
-          </div>
-        </div>
-
-        <div class="skill-category">
-          <h4>Machine Learning</h4>
-          <div class="skill-pills">
-            <span>Scikit-learn</span>
-            <span>TensorFlow</span>
-            <span>Random Forest</span>
-            <span>Logistic Regression</span>
-            <span>NLP</span>
-            <span>Feature Engineering</span>
-            <span>Model Validation</span>
-            <span>PD Modelling</span>
-          </div>
-        </div>
-
-        <div class="skill-category">
-          <h4>Tools &amp; Platforms</h4>
-          <div class="skill-pills">
-            <span>Bloomberg Terminal</span>
-            <span>Streamlit</span>
-            <span>Tableau</span>
-            <span>Power BI</span>
-            <span>Git</span>
-            <span>Excel / VBA</span>
-            <span>Spring Boot</span>
-            <span>AWS (Foundations)</span>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- Leadership -->
-  <section id="leadership">
-    <div class="container">
-      <h2 class="section-title">Leadership &amp; Volunteering</h2>
-      <div class="leadership-grid">
-        <div class="leadership-card">
-          <div class="l-icon">&#127891;</div>
-          <h4>PAL Leader</h4>
-          <p class="l-org">Brunel University London</p>
-          <p>Selected for strong academic performance to lead weekly study sessions for 30+ first-year Computer Science students, facilitating collaborative learning environments.</p>
-        </div>
-        <div class="leadership-card">
-          <div class="l-icon">&#127968;</div>
-          <h4>Volunteer &amp; Youth Mentor</h4>
-          <p class="l-org">Hari Sumerian UK &mdash; Present</p>
-          <p>Organised and executed sporting events for 100+ participants. Deliver spiritual discourses and mentorship to teenagers on academic and personal challenges.</p>
-        </div>
-        <div class="leadership-card">
-          <div class="l-icon">&#128101;</div>
-          <h4>Onboarding Buddy</h4>
-          <p class="l-org">Capgemini</p>
-          <p>Accelerated new-joiner integration by providing one-on-one support for IT setup, administrative tasks, and understanding team processes.</p>
+          <p class="exp-grade">Upper Second Class Honours (2:1)</p>
+          <ul class="exp-bullets">
+            <li>Final Year Project: AI-Based Virality Prediction Engine — NLP + deep learning on viral social media datasets</li>
+            <li>A-Levels: Mathematics (A), Physics (B), Computer Science (B)</li>
+          </ul>
+          <div class="exp-tags"><span>Computer Science</span><span>NLP</span><span>Deep Learning</span><span>Java</span></div>
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- Contact -->
-  <section id="contact">
-    <div class="container">
-      <h2 class="section-title">Get In Touch</h2>
-      <p class="contact-sub">I'm open to quant finance roles, software engineering opportunities, and collaborative projects. Feel free to reach out.</p>
-      <div class="contact-links">
-        <a href="mailto:divy.chauhan36@gmail.com" class="contact-card">
-          <div class="contact-icon">&#9993;</div>
-          <h4>Email</h4>
-          <p>divy.chauhan36@gmail.com</p>
-        </a>
-        <a href="https://www.linkedin.com/in/divy-chauhan" target="_blank" class="contact-card">
-          <div class="contact-icon">&#128279;</div>
-          <h4>LinkedIn</h4>
-          <p>linkedin.com/in/divy-chauhan</p>
-        </a>
-        <a href="tel:+447533277755" class="contact-card">
-          <div class="contact-icon">&#128222;</div>
-          <h4>Phone</h4>
-          <p>+44 7533 277755</p>
-        </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SKILLS ============ -->
+<section id="skills">
+  <div class="container">
+    <p class="section-label reveal">// technical stack</p>
+    <h2 class="section-title reveal">Skills</h2>
+    <div class="skills-grid">
+
+      <div class="skill-card reveal">
+        <div class="skill-card-header">
+          <div class="skill-icon">∑</div>
+          <h4>Mathematics & Quantitative Methods</h4>
+        </div>
+        <div class="skill-row">
+          <div class="skill-row-header"><span class="skill-name">Stochastic Calculus & PDEs</span><span class="skill-pct">90%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-width="90"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-row-header"><span class="skill-name">Monte Carlo Simulation</span><span class="skill-pct">88%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-width="88"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-row-header"><span class="skill-name">Time-Series Analysis</span><span class="skill-pct">82%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-width="82"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-row-header"><span class="skill-name">Linear Algebra & Statistics</span><span class="skill-pct">85%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-width="85"></div></div>
+        </div>
       </div>
+
+      <div class="skill-card reveal">
+        <div class="skill-card-header">
+          <div class="skill-icon">&lt;/&gt;</div>
+          <h4>Programming</h4>
+        </div>
+        <div class="skill-row">
+          <div class="skill-row-header"><span class="skill-name">Python (Pandas, NumPy, Scikit-learn)</span><span class="skill-pct">95%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-width="95"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-row-header"><span class="skill-name">Ada/SPARK (Formal Verification)</span><span class="skill-pct">85%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-width="85"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-row-header"><span class="skill-name">SQL & R</span><span class="skill-pct">80%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-width="80"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-row-header"><span class="skill-name">C++ & Java</span><span class="skill-pct">70%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-width="70"></div></div>
+        </div>
+      </div>
+
+      <div class="skill-card reveal">
+        <div class="skill-card-header">
+          <div class="skill-icon">⟳</div>
+          <h4>ML & AI</h4>
+        </div>
+        <div class="skill-row">
+          <div class="skill-row-header"><span class="skill-name">Supervised Learning & Random Forests</span><span class="skill-pct">88%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-width="88"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-row-header"><span class="skill-name">NLP & FinBERT</span><span class="skill-pct">75%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-width="75"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-row-header"><span class="skill-name">Feature Engineering & Model Validation</span><span class="skill-pct">85%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-width="85"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-row-header"><span class="skill-name">Deep Learning (TensorFlow)</span><span class="skill-pct">70%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-width="70"></div></div>
+        </div>
+      </div>
+
+      <div class="skill-card reveal">
+        <div class="skill-card-header">
+          <div class="skill-icon">$</div>
+          <h4>Finance & Risk</h4>
+        </div>
+        <div class="skill-row">
+          <div class="skill-row-header"><span class="skill-name">Derivatives Pricing (Black-Scholes, Greeks)</span><span class="skill-pct">88%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-width="88"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-row-header"><span class="skill-name">VaR, CVaR & Stress Testing</span><span class="skill-pct">82%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-width="82"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-row-header"><span class="skill-name">Systematic Strategy Development</span><span class="skill-pct">85%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-width="85"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-row-header"><span class="skill-name">Bloomberg Terminal</span><span class="skill-pct">78%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-width="78"></div></div>
+        </div>
+      </div>
+
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Footer -->
-  <footer>
-    <p>Divy Chauhan &copy; 2026 &mdash; Built with passion in London</p>
-  </footer>
+<!-- ============ PROJECTS ============ -->
+<section id="projects">
+  <div class="container">
+    <p class="section-label reveal">// research & engineering</p>
+    <h2 class="section-title reveal">Projects</h2>
+    <div class="projects-grid">
 
-  <script src="script.js"></script>
+      <div class="project-card reveal">
+        <div class="project-card-inner">
+          <div class="card-front">
+            <div class="project-num">01 / QUANT TRADING</div>
+            <h3>Algorithmic Strategy Backtester</h3>
+            <p>Modular Python backtesting framework evaluating Mean Reversion and Momentum strategies on S&P 500 historical data with full risk-adjusted performance analysis.</p>
+            <div class="project-metric">Sharpe: 1.84 · Max DD: -8.2%</div>
+            <div class="project-tags">
+              <span>Python</span><span>Pandas</span><span>Backtesting</span><span>Risk Metrics</span>
+            </div>
+          </div>
+          <div class="card-back">
+            <div>
+              <div class="project-num">01 / QUANT TRADING</div>
+              <h3>Algorithmic Strategy Backtester</h3>
+              <p>Implemented cointegration-based pair selection, Z-score entry/exit logic, and walk-forward validation. Calculated Sharpe, Beta, and Maximum Drawdown across volatility regimes.</p>
+              <div class="project-tags"><span>Statsmodels</span><span>Cointegration</span><span>Walk-Forward</span></div>
+            </div>
+            <a href="https://github.com/divy36" class="btn-gh" target="_blank">↗ View on GitHub</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-card-inner">
+          <div class="card-front">
+            <div class="project-num">02 / DERIVATIVES</div>
+            <h3>Black-Scholes Options Pricing Engine</h3>
+            <p>European options pricer with full Greek sensitivity analysis (Delta, Gamma, Vega, Theta, Rho). Analyses volatility surface shifts and time-decay impact on hedging exposures.</p>
+            <div class="project-metric">Vanilla + Exotic · Real-time Greeks</div>
+            <div class="project-tags">
+              <span>Python</span><span>NumPy</span><span>Black-Scholes</span><span>Greeks</span>
+            </div>
+          </div>
+          <div class="card-back">
+            <div>
+              <div class="project-num">02 / DERIVATIVES</div>
+              <h3>Black-Scholes Options Pricing Engine</h3>
+              <p>Explored market-maker implications for dynamic delta and vega risk management. Monte Carlo validation against closed-form solution for path-dependent structures.</p>
+              <div class="project-tags"><span>Monte Carlo</span><span>Implied Vol</span><span>Hedging</span></div>
+            </div>
+            <a href="https://github.com/divy36" class="btn-gh" target="_blank">↗ View on GitHub</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-card-inner">
+          <div class="card-front">
+            <div class="project-num">03 / CREDIT RISK</div>
+            <h3>Credit Default Prediction Model</h3>
+            <p>Classification model estimating borrower probability of default using financial ratio data. Logistic regression and Random Forest with cross-validation and feature importance analysis.</p>
+            <div class="project-metric">AUC: 0.87 · Recall: 50% (BCG Simulation)</div>
+            <div class="project-tags">
+              <span>Python</span><span>Scikit-learn</span><span>PD Modelling</span><span>EDA</span>
+            </div>
+          </div>
+          <div class="card-back">
+            <div>
+              <div class="project-num">03 / CREDIT RISK</div>
+              <h3>Credit Default Prediction Model</h3>
+              <p>Applied FICO score distribution analysis via dynamic programming (JPMorgan simulation). Evaluated leverage, liquidity, and repayment capacity under stressed scenarios for risk-based lending decisions.</p>
+              <div class="project-tags"><span>Random Forest</span><span>Stress Testing</span><span>VaR</span></div>
+            </div>
+            <a href="https://github.com/divy36" class="btn-gh" target="_blank">↗ View on GitHub</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-card-inner">
+          <div class="card-front">
+            <div class="project-num">04 / MACRO</div>
+            <h3>Real-Time Macro & Yield Curve Dashboard</h3>
+            <p>Streamlit dashboard integrating live US Treasury yield and CPI data via APIs. Visualises yield curve steepening/flattening to interpret macro regime shifts and asset price sensitivity.</p>
+            <div class="project-metric">Live data · Regime detection · Interactive</div>
+            <div class="project-tags">
+              <span>Python</span><span>Streamlit</span><span>APIs</span><span>Macro</span>
+            </div>
+          </div>
+          <div class="card-back">
+            <div>
+              <div class="project-num">04 / MACRO</div>
+              <h3>Real-Time Macro & Yield Curve Dashboard</h3>
+              <p>Connected yield curve dynamics (2s10s spread, inversion signals) to equity and credit market implications. Built dynamic visualisations for Fed policy cycle analysis and liquidity risk interpretation.</p>
+              <div class="project-tags"><span>Bloomberg</span><span>Yield Curve</span><span>Fixed Income</span></div>
+            </div>
+            <a href="https://github.com/divy36" class="btn-gh" target="_blank">↗ View on GitHub</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ RESEARCH ============ -->
+<section id="research">
+  <div class="container">
+    <p class="section-label reveal">// writing & analysis</p>
+    <h2 class="section-title reveal">Research & Writing</h2>
+    <div class="research-list reveal">
+
+      <div class="research-item">
+        <div class="research-date">FEB 2026</div>
+        <div class="research-content">
+          <h4>Customer Churn Prediction via Ensemble Methods — BCG Data Science Simulation</h4>
+          <p>Engineered a Random Forest model achieving 50% churn recall. Delivered executive summary with actionable retention insights for XYZ Analytics senior stakeholders.</p>
+        </div>
+        <div>
+          <div class="research-badge">Data Science</div>
+        </div>
+        <a href="#" class="research-link">Read →</a>
+      </div>
+
+      <div class="research-item">
+        <div class="research-date">2025</div>
+        <div class="research-content">
+          <h4>Probability of Default Modelling via FICO Score Quantisation — JPMorgan QR Simulation</h4>
+          <p>Applied dynamic programming to transform continuous FICO distributions into categorical PD predictors. Evaluated credit loss exposure across loan portfolio tranches.</p>
+        </div>
+        <div>
+          <div class="research-badge">Credit Risk</div>
+        </div>
+        <a href="#" class="research-link">Read →</a>
+      </div>
+
+      <div class="research-item">
+        <div class="research-date">2023</div>
+        <div class="research-content">
+          <h4>AI-Based Virality Prediction Engine — Final Year Dissertation, Brunel University</h4>
+          <p>NLP analysis of thousands of viral social media posts. Deep-learning model identifying key behavioural engagement drivers, producing data-driven content recommendations.</p>
+        </div>
+        <div>
+          <div class="research-badge">NLP / ML</div>
+        </div>
+        <a href="#" class="research-link">Read →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ CERTIFICATIONS ============ -->
+<section id="certifications">
+  <div class="container">
+    <p class="section-label reveal">// credentials</p>
+    <h2 class="section-title reveal">Licences & Certifications</h2>
+    <div class="certs-grid reveal">
+
+      <div class="cert-card">
+        <div class="cert-header">
+          <img src="https://logo.clearbit.com/bcg.com" alt="BCG" class="cert-logo" onerror="this.style.display='none'"/>
+          <div class="cert-issuer-wrap">
+            <span class="cert-issuer">Boston Consulting Group</span>
+            <span class="cert-date">Feb 2026</span>
+          </div>
+        </div>
+        <h4 class="cert-name">BCG Data Science Job Simulation</h4>
+        <p class="cert-desc">Customer churn analysis for XYZ Analytics — Random Forest model achieving 50% recall. Executive summary with actionable insights for senior decision-making. Issued via Forage.</p>
+        <div class="cert-tags"><span>Python</span><span>Random Forest</span><span>Churn Modelling</span><span>Forage</span></div>
+      </div>
+
+      <div class="cert-card">
+        <div class="cert-header">
+          <img src="https://logo.clearbit.com/goldmansachs.com" alt="Goldman Sachs" class="cert-logo" onerror="this.style.display='none'"/>
+          <div class="cert-issuer-wrap">
+            <span class="cert-issuer">Goldman Sachs</span>
+            <span class="cert-date">2025</span>
+          </div>
+        </div>
+        <h4 class="cert-name">Goldman Sachs Risk Job Simulation</h4>
+        <p class="cert-desc">Structured financial risk analysis — evaluated leverage, liquidity and repayment capacity under stressed scenarios. Recommended risk mitigation strategies balancing risk-return trade-offs. Issued via Forage.</p>
+        <div class="cert-tags"><span>Risk Analysis</span><span>Stress Testing</span><span>Credit</span><span>Forage</span></div>
+      </div>
+
+      <div class="cert-card">
+        <div class="cert-header">
+          <img src="https://logo.clearbit.com/jpmorganchase.com" alt="JPMorgan" class="cert-logo" onerror="this.style.display='none'"/>
+          <div class="cert-issuer-wrap">
+            <span class="cert-issuer">JPMorgan Chase & Co.</span>
+            <span class="cert-date">2025</span>
+          </div>
+        </div>
+        <h4 class="cert-name">Quantitative Research Virtual Experience</h4>
+        <p class="cert-desc">Analysed a structured loan portfolio to estimate customer probability of default (PD). Applied dynamic programming to transform FICO score distributions into categorical predictors. Issued via Forage.</p>
+        <div class="cert-tags"><span>PD Modelling</span><span>Quantitative Research</span><span>Python</span><span>Forage</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section id="contact">
+  <div class="container">
+    <p class="section-label reveal">// get in touch</p>
+    <h2 class="section-title reveal">Contact</h2>
+    <div class="contact-wrap reveal">
+      <h3 class="contact-headline">Open to Quant Roles & Research Collaborations</h3>
+      <p class="contact-sub">London-based. Available for internships and full-time roles in quantitative trading, risk, and research.</p>
+      <div class="contact-icons">
+        <a href="https://www.linkedin.com/in/divy-chauhan" target="_blank" class="contact-icon-btn">&#128279; LinkedIn</a>
+        <a href="https://github.com/divy36" target="_blank" class="contact-icon-btn">&#128025; GitHub</a>
+        <a href="mailto:divy.chauhan36@gmail.com" class="contact-icon-btn">&#9993; Email</a>
+        <a href="tel:+447533277755" class="contact-icon-btn">&#128222; +44 7533 277755</a>
+      </div>
+      <form class="contact-form" onsubmit="return false;">
+        <div class="form-row">
+          <div class="form-group">
+            <label>NAME</label>
+            <input type="text" placeholder="Jane Smith"/>
+          </div>
+          <div class="form-group">
+            <label>EMAIL</label>
+            <input type="email" placeholder="jane@citadel.com"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>MESSAGE</label>
+          <textarea placeholder="I'd like to discuss a quant research role..."></textarea>
+        </div>
+        <button type="submit" class="btn-send">Send Message →</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <p class="footer-main">Built with maths, coffee, and code. &copy; 2026 Divy Chauhan</p>
+  <p class="footer-sub">Seeking Quant Research · Trading · Development roles</p>
+</footer>
+
+<!-- ============ THREE.JS ============ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+
+<script>
+/* =============================================
+   LOADING SCREEN
+============================================= */
+const loaderBar = document.getElementById('loader-bar');
+const loaderText = document.getElementById('loader-text');
+const loader = document.getElementById('loader');
+let progress = 0;
+const labels = ['Loading assets...','Calibrating models...','Pricing derivatives...','Initialising UI...','Ready.'];
+const interval = setInterval(() => {
+  progress += Math.random() * 18 + 4;
+  if (progress >= 100) { progress = 100; clearInterval(interval); }
+  loaderBar.style.width = progress + '%';
+  loaderText.textContent = labels[Math.min(Math.floor(progress/25), labels.length-1)] + ' ' + Math.floor(progress) + '%';
+  if (progress === 100) {
+    setTimeout(() => {
+      loader.style.opacity = '0';
+      setTimeout(() => { loader.style.display = 'none'; }, 500);
+    }, 300);
+  }
+}, 80);
+
+/* =============================================
+   THREE.JS PARTICLE BACKGROUND
+============================================= */
+const canvas = document.getElementById('bg-canvas');
+const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+renderer.setPixelRatio(window.devicePixelRatio);
+renderer.setSize(window.innerWidth, window.innerHeight);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.z = 80;
+
+// Particles
+const COUNT = 400;
+const positions = new Float32Array(COUNT * 3);
+const velocities = [];
+const colors = new Float32Array(COUNT * 3);
+const sizes = new Float32Array(COUNT);
+
+for (let i = 0; i < COUNT; i++) {
+  positions[i*3]   = (Math.random() - 0.5) * 200;
+  positions[i*3+1] = (Math.random() - 0.5) * 120;
+  positions[i*3+2] = (Math.random() - 0.5) * 60;
+  velocities.push({
+    x: (Math.random() - 0.5) * 0.04,
+    y: (Math.random() - 0.5) * 0.04,
+    z: (Math.random() - 0.5) * 0.02
+  });
+  const type = Math.random();
+  if (type < 0.06) { colors[i*3]=0.94; colors[i*3+1]=0.27; colors[i*3+2]=0.27; } // red signal
+  else if (type < 0.18) { colors[i*3]=0.23; colors[i*3+1]=0.51; colors[i*3+2]=0.96; } // blue signal
+  else { colors[i*3]=0.7; colors[i*3+1]=0.78; colors[i*3+2]=0.96; } // light blue
+  sizes[i] = Math.random() * 1.5 + 0.5;
+}
+
+const geo = new THREE.BufferGeometry();
+geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+geo.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+
+const mat = new THREE.PointsMaterial({
+  size: 0.8,
+  vertexColors: true,
+  transparent: true,
+  opacity: 0.4,
+  sizeAttenuation: true,
+  blending: THREE.AdditiveBlending,
+  depthWrite: false
+});
+
+const particles = new THREE.Points(geo, mat);
+scene.add(particles);
+
+// Connecting lines
+const lineMat = new THREE.LineBasicMaterial({ color: 0x3B82F6, transparent: true, opacity: 0.06 });
+const lineGeo = new THREE.BufferGeometry();
+const linePos = [];
+const THRESHOLD = 18;
+for (let i = 0; i < COUNT; i++) {
+  for (let j = i+1; j < COUNT; j++) {
+    const dx = positions[i*3] - positions[j*3];
+    const dy = positions[i*3+1] - positions[j*3+1];
+    const dz = positions[i*3+2] - positions[j*3+2];
+    if (Math.sqrt(dx*dx+dy*dy+dz*dz) < THRESHOLD) {
+      linePos.push(positions[i*3], positions[i*3+1], positions[i*3+2]);
+      linePos.push(positions[j*3], positions[j*3+1], positions[j*3+2]);
+    }
+  }
+}
+lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(linePos, 3));
+const lines = new THREE.LineSegments(lineGeo, lineMat);
+scene.add(lines);
+
+function updateParticleOpacity() {
+  const theme = document.documentElement.getAttribute('data-theme');
+  mat.opacity = theme === 'dark' ? 0.4 : 0.15;
+  lineMat.opacity = theme === 'dark' ? 0.06 : 0.03;
+}
+
+let animFrame;
+function animate() {
+  animFrame = requestAnimationFrame(animate);
+  const pos = geo.attributes.position.array;
+  for (let i = 0; i < COUNT; i++) {
+    pos[i*3]   += velocities[i].x;
+    pos[i*3+1] += velocities[i].y;
+    pos[i*3+2] += velocities[i].z;
+    if (Math.abs(pos[i*3])   > 100) velocities[i].x *= -1;
+    if (Math.abs(pos[i*3+1]) > 60)  velocities[i].y *= -1;
+    if (Math.abs(pos[i*3+2]) > 30)  velocities[i].z *= -1;
+  }
+  geo.attributes.position.needsUpdate = true;
+  particles.rotation.y += 0.0003;
+  renderer.render(scene, camera);
+}
+animate();
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+/* =============================================
+   DARK / LIGHT TOGGLE
+============================================= */
+const toggle = document.getElementById('theme-toggle');
+const getTheme = () => document.documentElement.getAttribute('data-theme');
+
+function applyTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  toggle.textContent = t === 'dark' ? '☀' : '☾';
+  localStorage.setItem('theme', t);
+  updateParticleOpacity();
+}
+
+// On load: check localStorage or system preference
+const saved = localStorage.getItem('theme');
+if (saved) { applyTheme(saved); }
+else if (window.matchMedia('(prefers-color-scheme: light)').matches) { applyTheme('light'); }
+else { applyTheme('dark'); }
+
+toggle.addEventListener('click', () => applyTheme(getTheme() === 'dark' ? 'light' : 'dark'));
+
+/* =============================================
+   CUSTOM CURSOR
+============================================= */
+const dot = document.getElementById('cursor-dot');
+const ring = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+
+function moveCursor() {
+  dot.style.left = mx + 'px';
+  dot.style.top = my + 'px';
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px';
+  ring.style.top = ry + 'px';
+  requestAnimationFrame(moveCursor);
+}
+moveCursor();
+
+document.querySelectorAll('a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => { ring.style.width='44px'; ring.style.height='44px'; ring.style.opacity='0.8'; });
+  el.addEventListener('mouseleave', () => { ring.style.width='28px'; ring.style.height='28px'; ring.style.opacity='0.5'; });
+});
+
+/* =============================================
+   NAVBAR SCROLL
+============================================= */
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => { navbar.classList.toggle('scrolled', window.scrollY > 40); });
+
+/* =============================================
+   ACTIVE NAV LINK
+============================================= */
+const sections = document.querySelectorAll('section[id]');
+const navAs = document.querySelectorAll('.nav-links a');
+
+window.addEventListener('scroll', () => {
+  let cur = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 140) cur = s.id; });
+  navAs.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + cur);
+  });
+});
+
+/* =============================================
+   TYPEWRITER
+============================================= */
+const roles = ['Quantitative Analyst', 'Algorithmic Strategist', 'ML Research Engineer', 'Derivatives Modeller'];
+const tw = document.getElementById('typewriter');
+let ri = 0, ci = 0, deleting = false;
+
+function type() {
+  const word = roles[ri];
+  if (!deleting) {
+    tw.textContent = word.slice(0, ++ci);
+    if (ci === word.length) { deleting = true; setTimeout(type, 1800); return; }
+  } else {
+    tw.textContent = word.slice(0, --ci);
+    if (ci === 0) { deleting = false; ri = (ri + 1) % roles.length; setTimeout(type, 400); return; }
+  }
+  setTimeout(type, deleting ? 45 : 80);
+}
+setTimeout(type, 2800);
+
+/* =============================================
+   TICKER BAR
+============================================= */
+const tickers = [
+  { sym:'SPY', price:'589.42', chg:'+0.84%', up:true },
+  { sym:'BTC/USD', price:'97,210', chg:'-1.23%', up:false },
+  { sym:'VIX', price:'14.82', chg:'+3.41%', up:false },
+  { sym:'EUR/USD', price:'1.0842', chg:'+0.12%', up:true },
+  { sym:'GS', price:'542.16', chg:'+1.05%', up:true },
+  { sym:'ES=F', price:'5,923', chg:'+0.61%', up:true },
+  { sym:'QQQ', price:'511.87', chg:'+1.22%', up:true },
+  { sym:'GLD', price:'231.54', chg:'-0.34%', up:false },
+  { sym:'TLT', price:'98.23', chg:'+0.18%', up:true },
+  { sym:'JPM', price:'231.04', chg:'+0.73%', up:true },
+];
+
+const track = document.getElementById('ticker-track');
+const html = tickers.map(t =>
+  `<span class="ticker-item"><span class="ticker-sym">${t.sym}</span><span class="ticker-price">${t.price}</span><span class="${t.up?'up':'down'}">${t.chg}</span></span>`
+).join('');
+track.innerHTML = html + html; // duplicate for seamless loop
+
+/* =============================================
+   INTERSECTION OBSERVER — REVEAL
+============================================= */
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      revealObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+/* =============================================
+   SKILL BAR ANIMATION
+============================================= */
+const skillObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.skill-fill').forEach(bar => {
+        bar.style.width = bar.dataset.width + '%';
+      });
+      skillObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.2 });
+
+document.querySelectorAll('.skill-card').forEach(c => skillObs.observe(c));
+
+/* =============================================
+   STAT COUNTERS
+============================================= */
+const counterObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const el = e.target.querySelector('.stat-number');
+      if (!el) return;
+      const target = parseInt(el.dataset.target);
+      let cur = 0;
+      const step = Math.max(1, Math.floor(target / 30));
+      const t = setInterval(() => {
+        cur += step;
+        if (cur >= target) { cur = target; clearInterval(t); }
+        el.textContent = cur + (target > 10 ? '+' : '');
+      }, 50);
+      counterObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('.stat-card').forEach(c => counterObs.observe(c));
+</script>
 </body>
 </html>
