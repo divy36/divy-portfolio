@@ -632,7 +632,7 @@ section { position: relative; z-index: 1; padding: 6rem 0; }
 
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
   margin-top: 3rem;
 }
@@ -1109,7 +1109,7 @@ footer {
 
 .certs-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
   margin-top: 3rem;
 }
@@ -1203,6 +1203,11 @@ footer {
   .certs-grid { grid-template-columns: 1fr; }
 }
 
+@media (min-width: 901px) and (max-width: 1100px) {
+  .projects-grid { grid-template-columns: repeat(2, 1fr); }
+}
+}
+
 @media (max-width: 768px) {
   .nav-links { display: none; }
   #cursor-dot, #cursor-ring { display: none; }
@@ -1254,9 +1259,10 @@ footer {
     <span class="role-wrap"><span id="typewriter"></span></span>
   </h1>
   <p class="hero-bio">
-    Bridging quantitative finance, machine learning, and high-integrity engineering.
-    Former Associate Software Engineer at Capgemini — now focused on derivatives modelling,
-    systematic strategies, and building tools that turn data into decisions.
+    MSc Computational Finance candidate at King's College London. Former Associate Software Engineer
+    at Capgemini delivering zero-defect Ada/SPARK systems. Now applying rigorous engineering discipline
+    to derivatives pricing, systematic trading strategies, and quantitative risk — with a particular
+    interest in OTC markets, high-frequency finance, and algorithmic execution.
   </p>
   <div class="hero-buttons">
     <a href="#projects" class="btn-primary">View Projects</a>
@@ -1297,8 +1303,13 @@ footer {
           that improved team efficiency by <strong>~30%</strong>.
         </p>
         <p>
-          Now I'm building derivatives pricing engines, systematic trading strategies, credit risk models,
-          and real-time macro dashboards — applying rigorous engineering discipline to quantitative finance problems.
+          I've completed industry simulations at <strong>Bank of America</strong> (Sales & Trading), <strong>Goldman Sachs</strong> (Financial Risk),
+          and <strong>JPMorgan Chase</strong> (Quantitative Research) — analysing real market data on Bloomberg, stress-testing credit portfolios,
+          and building probability of default models.
+        </p>
+        <p>
+          Now building derivatives pricing engines, systematic trading strategies, Monte Carlo simulation frameworks,
+          and credit risk models — with a particular interest in <strong>OTC markets, high-frequency finance, and electronic execution</strong>.
         </p>
         <div class="stats-grid">
           <div class="stat-card reveal">
@@ -1385,9 +1396,9 @@ footer {
           </div>
           <p class="exp-grade">Expected: Distinction</p>
           <ul class="exp-bullets">
-            <li>Quantitative Risk Management, Derivatives Pricing, Liquidity Forecasting, Financial Markets Risk</li>
+            <li>Modules: Quantitative Risk Management, Derivatives Pricing, Liquidity Forecasting, Financial Markets Risk, Statistics in Finance, High Frequency Finance, Agent-Based Modelling</li>
             <li>Stochastic calculus, Monte Carlo simulations, time-series modelling in Python & R</li>
-            <li>Bloomberg Terminal for market data extraction and trade analysis</li>
+            <li>Bloomberg Terminal for market data extraction, yield curve analysis, and trade analysis</li>
           </ul>
           <div class="exp-tags"><span>Quant Finance</span><span>Python</span><span>Bloomberg</span><span>R</span></div>
         </div>
@@ -1529,8 +1540,8 @@ footer {
           <div class="card-front">
             <div class="project-num">01 / QUANT TRADING</div>
             <h3>Algorithmic Strategy Backtester</h3>
-            <p>Modular Python backtesting framework evaluating Mean Reversion and Momentum strategies on S&P 500 historical data with full risk-adjusted performance analysis.</p>
-            <div class="project-metric">Sharpe: 1.84 · Max DD: -8.2%</div>
+            <p>Modular Python backtesting framework evaluating Mean Reversion and Momentum strategies on S&P 500 historical data with full risk-adjusted performance attribution.</p>
+            <div class="project-metric">Sharpe: 1.84 · Max DD: -8.2% · Beta-adjusted</div>
             <div class="project-tags">
               <span>Python</span><span>Pandas</span><span>Backtesting</span><span>Risk Metrics</span>
             </div>
@@ -1539,8 +1550,8 @@ footer {
             <div>
               <div class="project-num">01 / QUANT TRADING</div>
               <h3>Algorithmic Strategy Backtester</h3>
-              <p>Implemented cointegration-based pair selection, Z-score entry/exit logic, and walk-forward validation. Calculated Sharpe, Beta, and Maximum Drawdown across volatility regimes.</p>
-              <div class="project-tags"><span>Statsmodels</span><span>Cointegration</span><span>Walk-Forward</span></div>
+              <p>Cointegration-based pair selection, Z-score entry/exit signals, walk-forward validation. Stress-tested across multiple volatility regimes. Sharpe, Beta, and Maximum Drawdown calculated per regime.</p>
+              <div class="project-tags"><span>Statsmodels</span><span>Cointegration</span><span>Walk-Forward</span><span>Momentum</span></div>
             </div>
             <a href="https://github.com/divy36" class="btn-gh" target="_blank">↗ View on GitHub</a>
           </div>
@@ -1552,8 +1563,8 @@ footer {
           <div class="card-front">
             <div class="project-num">02 / DERIVATIVES</div>
             <h3>Black-Scholes Options Pricing Engine</h3>
-            <p>European options pricer with full Greek sensitivity analysis (Delta, Gamma, Vega, Theta, Rho). Analyses volatility surface shifts and time-decay impact on hedging exposures.</p>
-            <div class="project-metric">Vanilla + Exotic · Real-time Greeks</div>
+            <p>European options pricer with full Greek sensitivity (Delta, Gamma, Vega, Theta, Rho). Analyses implied volatility surface shifts and time-decay impact on dynamic hedging exposures.</p>
+            <div class="project-metric">Full Greeks · Monte Carlo validation · Vol surface</div>
             <div class="project-tags">
               <span>Python</span><span>NumPy</span><span>Black-Scholes</span><span>Greeks</span>
             </div>
@@ -1562,8 +1573,8 @@ footer {
             <div>
               <div class="project-num">02 / DERIVATIVES</div>
               <h3>Black-Scholes Options Pricing Engine</h3>
-              <p>Explored market-maker implications for dynamic delta and vega risk management. Monte Carlo validation against closed-form solution for path-dependent structures.</p>
-              <div class="project-tags"><span>Monte Carlo</span><span>Implied Vol</span><span>Hedging</span></div>
+              <p>Market-maker delta/vega risk implications under dynamic hedging. Monte Carlo path simulation validated against closed-form. Volatility smile and term structure analysis for OTC derivatives context.</p>
+              <div class="project-tags"><span>Monte Carlo</span><span>Implied Vol</span><span>Vega Risk</span><span>OTC</span></div>
             </div>
             <a href="https://github.com/divy36" class="btn-gh" target="_blank">↗ View on GitHub</a>
           </div>
@@ -1573,20 +1584,43 @@ footer {
       <div class="project-card reveal">
         <div class="project-card-inner">
           <div class="card-front">
-            <div class="project-num">03 / CREDIT RISK</div>
+            <div class="project-num">03 / MONTE CARLO</div>
+            <h3>Monte Carlo Strategy Simulation Engine</h3>
+            <p>Probabilistic framework for evaluating trading strategy performance under uncertainty. Parameter sensitivity analysis and scenario stress-testing across thousands of simulated market paths.</p>
+            <div class="project-metric">10,000+ paths · Regime switching · VaR/CVaR output</div>
+            <div class="project-tags">
+              <span>Python</span><span>Monte Carlo</span><span>Stochastic</span><span>VaR</span>
+            </div>
+          </div>
+          <div class="card-back">
+            <div>
+              <div class="project-num">03 / MONTE CARLO</div>
+              <h3>Monte Carlo Strategy Simulation Engine</h3>
+              <p>Asset path simulation under GBM and mean-reversion assumptions. Expected value and risk-adjusted return frameworks. Outputs: VaR, CVaR, probability distribution of returns, and parameter sensitivity surfaces.</p>
+              <div class="project-tags"><span>GBM</span><span>CVaR</span><span>SciPy</span><span>Stress Testing</span></div>
+            </div>
+            <a href="https://github.com/divy36" class="btn-gh" target="_blank">↗ View on GitHub</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-card-inner">
+          <div class="card-front">
+            <div class="project-num">04 / CREDIT RISK</div>
             <h3>Credit Default Prediction Model</h3>
-            <p>Classification model estimating borrower probability of default using financial ratio data. Logistic regression and Random Forest with cross-validation and feature importance analysis.</p>
-            <div class="project-metric">AUC: 0.87 · Recall: 50% (BCG Simulation)</div>
+            <p>Classification model estimating borrower probability of default using financial ratio data. Logistic regression and Random Forest with cross-validation and interpretable risk-driver analysis.</p>
+            <div class="project-metric">AUC: 0.87 · Recall: 50% · PD output</div>
             <div class="project-tags">
               <span>Python</span><span>Scikit-learn</span><span>PD Modelling</span><span>EDA</span>
             </div>
           </div>
           <div class="card-back">
             <div>
-              <div class="project-num">03 / CREDIT RISK</div>
+              <div class="project-num">04 / CREDIT RISK</div>
               <h3>Credit Default Prediction Model</h3>
-              <p>Applied FICO score distribution analysis via dynamic programming (JPMorgan simulation). Evaluated leverage, liquidity, and repayment capacity under stressed scenarios for risk-based lending decisions.</p>
-              <div class="project-tags"><span>Random Forest</span><span>Stress Testing</span><span>VaR</span></div>
+              <p>FICO score quantisation via dynamic programming (JPMorgan QR simulation). Evaluated leverage, liquidity, and repayment capacity under stress. Model coefficients interpreted to identify key credit risk drivers.</p>
+              <div class="project-tags"><span>Random Forest</span><span>Stress Testing</span><span>FICO</span><span>Feature Eng.</span></div>
             </div>
             <a href="https://github.com/divy36" class="btn-gh" target="_blank">↗ View on GitHub</a>
           </div>
@@ -1596,20 +1630,43 @@ footer {
       <div class="project-card reveal">
         <div class="project-card-inner">
           <div class="card-front">
-            <div class="project-num">04 / MACRO</div>
+            <div class="project-num">05 / MACRO</div>
             <h3>Real-Time Macro & Yield Curve Dashboard</h3>
-            <p>Streamlit dashboard integrating live US Treasury yield and CPI data via APIs. Visualises yield curve steepening/flattening to interpret macro regime shifts and asset price sensitivity.</p>
-            <div class="project-metric">Live data · Regime detection · Interactive</div>
+            <p>Streamlit dashboard integrating live US Treasury yield and CPI data via APIs. Visualises 2s10s spread and yield curve shape to interpret macro regime shifts and Fed policy cycles.</p>
+            <div class="project-metric">Live APIs · 2s10s spread · Regime signals</div>
             <div class="project-tags">
-              <span>Python</span><span>Streamlit</span><span>APIs</span><span>Macro</span>
+              <span>Python</span><span>Streamlit</span><span>Fixed Income</span><span>APIs</span>
             </div>
           </div>
           <div class="card-back">
             <div>
-              <div class="project-num">04 / MACRO</div>
+              <div class="project-num">05 / MACRO</div>
               <h3>Real-Time Macro & Yield Curve Dashboard</h3>
-              <p>Connected yield curve dynamics (2s10s spread, inversion signals) to equity and credit market implications. Built dynamic visualisations for Fed policy cycle analysis and liquidity risk interpretation.</p>
-              <div class="project-tags"><span>Bloomberg</span><span>Yield Curve</span><span>Fixed Income</span></div>
+              <p>Connected yield curve dynamics to equity and credit market implications. Inflation and rate path visualisation for Fed cycle analysis. Asset price sensitivity and liquidity risk monitoring across macro environments.</p>
+              <div class="project-tags"><span>Bloomberg</span><span>Yield Curve</span><span>Liquidity Risk</span><span>Macro</span></div>
+            </div>
+            <a href="https://github.com/divy36" class="btn-gh" target="_blank">↗ View on GitHub</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-card-inner">
+          <div class="card-front">
+            <div class="project-num">06 / NLP / ML</div>
+            <h3>AI-Based Virality Prediction Engine</h3>
+            <p>Final year dissertation at Brunel. NLP pipeline on thousands of viral social media posts to identify behavioural engagement drivers and generate data-driven content optimisation recommendations.</p>
+            <div class="project-metric">Deep Learning · LLMs · NLP pipeline · Brunel 2023</div>
+            <div class="project-tags">
+              <span>Python</span><span>NLP</span><span>TensorFlow</span><span>LLMs</span>
+            </div>
+          </div>
+          <div class="card-back">
+            <div>
+              <div class="project-num">06 / NLP / ML</div>
+              <h3>AI-Based Virality Prediction Engine</h3>
+              <p>Tokenisation, embedding, and deep-learning classification on high-volume social datasets. Identified key engagement features and trained models to predict virality scores. Delivered a functional recommendation application.</p>
+              <div class="project-tags"><span>Transformers</span><span>Feature Eng.</span><span>Classification</span><span>EDA</span></div>
             </div>
             <a href="https://github.com/divy36" class="btn-gh" target="_blank">↗ View on GitHub</a>
           </div>
@@ -1711,6 +1768,19 @@ footer {
         <h4 class="cert-name">Quantitative Research Virtual Experience</h4>
         <p class="cert-desc">Analysed a structured loan portfolio to estimate customer probability of default (PD). Applied dynamic programming to transform FICO score distributions into categorical predictors. Issued via Forage.</p>
         <div class="cert-tags"><span>PD Modelling</span><span>Quantitative Research</span><span>Python</span><span>Forage</span></div>
+      </div>
+
+      <div class="cert-card">
+        <div class="cert-header">
+          <img src="https://logo.clearbit.com/bankofamerica.com" alt="Bank of America" class="cert-logo" onerror="this.style.display='none'"/>
+          <div class="cert-issuer-wrap">
+            <span class="cert-issuer">Bank of America</span>
+            <span class="cert-date">2025</span>
+          </div>
+        </div>
+        <h4 class="cert-name">Sales & Trading Analyst Job Simulation</h4>
+        <p class="cert-desc">Analysed equity and fixed-income market data using Bloomberg and Excel to assess liquidity conditions. Researched and proposed strategic recommendations for optimising trade execution. Designed a workflow automation framework to enhance desk efficiency. Issued via Forage.</p>
+        <div class="cert-tags"><span>Sales & Trading</span><span>Bloomberg</span><span>Fixed Income</span><span>Forage</span></div>
       </div>
 
     </div>
