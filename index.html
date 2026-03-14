@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Divy Chauhan | Portfolio</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav id="navbar">
+    <div class="nav-container">
+      <a href="#hero" class="nav-logo">DC</a>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#education">Education</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#contact" class="nav-cta">Contact</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger">&#9776;</button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section id="hero">
+    <div class="hero-content">
+      <p class="hero-tag">MSc Computational Finance · King's College London</p>
+      <h1>Divy <span class="accent">Chauhan</span></h1>
+      <p class="hero-subtitle">Quantitative Analyst &amp; Software Engineer bridging financial modelling, machine learning, and high-integrity systems.</p>
+      <div class="hero-buttons">
+        <a href="#projects" class="btn btn-primary">View Projects</a>
+        <a href="#contact" class="btn btn-outline">Get in Touch</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><span>2+</span><p>Years at Capgemini</p></div>
+        <div class="stat"><span>30%</span><p>Efficiency gain via automation</p></div>
+        <div class="stat"><span>3</span><p>Industry simulations</p></div>
+        <div class="stat"><span>30+</span><p>Students mentored</p></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="orb orb1"></div>
+      <div class="orb orb2"></div>
+      <div class="code-card">
+        <div class="code-bar"><span></span><span></span><span></span></div>
+        <pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">from</span> scipy.stats <span class="kw">import</span> norm
+
+<span class="fn">def</span> <span class="name">black_scholes</span>(S, K, T, r, σ):
+    d1 = (np.log(S/K) +
+         (r + σ**2/2)*T) / (σ*np.sqrt(T))
+    d2 = d1 - σ * np.sqrt(T)
+    <span class="kw">return</span> S*norm.cdf(d1) - K*np.exp(
+           -r*T)*norm.cdf(d2)</code></pre>
+      </div>
+    </div>
+    <a href="#about" class="scroll-down">&#x2193;</a>
+  </section>
+
+  <!-- About -->
+  <section id="about">
+    <div class="container">
+      <h2 class="section-title">About Me</h2>
+      <div class="about-grid">
+        <div class="about-text">
+          <p>I'm a <strong>MSc Computational Finance</strong> candidate at King's College London, with a background in high-integrity software engineering at Capgemini. My work sits at the intersection of quantitative finance, machine learning, and robust engineering.</p>
+          <p>At Capgemini I delivered mission-critical Ada/SPARK code in zero-defect regulatory frameworks, co-built automation tooling that improved team efficiency by 30%, and communicated data-driven findings to senior stakeholders.</p>
+          <p>Now I'm applying that rigour to financial modelling — building derivatives pricing engines, systematic trading strategies, and credit risk frameworks.</p>
+          <div class="about-tags">
+            <span>Quantitative Finance</span>
+            <span>Machine Learning</span>
+            <span>Software Engineering</span>
+            <span>Risk Modelling</span>
+            <span>Bloomberg Terminal</span>
+          </div>
+        </div>
+        <div class="about-cards">
+          <div class="info-card">
+            <div class="icon">&#127891;</div>
+            <h4>Education</h4>
+            <p>MSc Computational Finance<br/>King's College London</p>
+          </div>
+          <div class="info-card">
+            <div class="icon">&#128205;</div>
+            <h4>Location</h4>
+            <p>London, United Kingdom</p>
+          </div>
+          <div class="info-card">
+            <div class="icon">&#128172;</div>
+            <h4>Languages</h4>
+            <p>English · Gujarati · Hindi</p>
+          </div>
+          <div class="info-card">
+            <div class="icon">&#9971;</div>
+            <h4>Interests</h4>
+            <p>Hiking · Chess · Go-Karting · Podcasts</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Education -->
+  <section id="education">
+    <div class="container">
+      <h2 class="section-title">Education</h2>
+      <div class="timeline">
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <div class="timeline-header">
+              <div>
+                <h3>MSc Computational Finance</h3>
+                <p class="org">King's College London</p>
+              </div>
+              <span class="timeline-date">2025 – Present</span>
+            </div>
+            <p class="grade">Expected: Distinction</p>
+            <ul>
+              <li>Quantitative Risk Management, Derivatives Pricing, Liquidity Forecasting, Financial Markets Risk</li>
+              <li>Applied stochastic calculus, Monte Carlo simulations, and time-series modelling to financial datasets</li>
+              <li>Developed machine learning models and systematic trading logic in Python and R</li>
+              <li>Used Bloomberg Terminal for market data extraction and trade analysis</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <div class="timeline-header">
+              <div>
+                <h3>BSc Computer Science</h3>
+                <p class="org">Brunel University London</p>
+              </div>
+              <span class="timeline-date">2020 – 2023</span>
+            </div>
+            <p class="grade">Upper Second Class Honours (2:1)</p>
+            <ul>
+              <li><strong>Final Year Project:</strong> AI-Based Virality Prediction Engine — analysed thousands of high-engagement datasets using NLP, built deep-learning application generating data-driven optimisation recommendations</li>
+            </ul>
+            <p class="alevel">A-Levels: Mathematics (A), Physics (B), Computer Science (B)</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Experience -->
+  <section id="experience">
+    <div class="container">
+      <h2 class="section-title">Work Experience</h2>
+      <div class="timeline">
+
+        <div class="timeline-item">
+          <div class="timeline-dot accent-dot"></div>
+          <div class="timeline-card">
+            <div class="timeline-header">
+              <div>
+                <h3>Associate Software Engineer</h3>
+                <p class="org">Capgemini &mdash; London, UK</p>
+              </div>
+              <span class="timeline-date">Oct 2023 – Sep 2025</span>
+            </div>
+            <ul>
+              <li>Translated ambiguous client requirements into formally verified Ada/SPARK specifications within zero-defect regulatory frameworks</li>
+              <li>Delivered mission-critical code in high-integrity systems requiring precision and auditability</li>
+              <li>Conducted structured root-cause analysis on recurring system failures using large datasets, identifying systemic risk drivers</li>
+              <li>Co-developed automation tooling improving development efficiency by ~30%</li>
+              <li>Synthesised complex technical findings into commercially focused reports and presented to senior client stakeholders</li>
+              <li>Acted as Onboarding Buddy, accelerating new-joiner integration into team processes</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot accent-dot"></div>
+          <div class="timeline-card">
+            <div class="timeline-header">
+              <div>
+                <h3>Software Engineer Trainee</h3>
+                <p class="org">Digital Futures &mdash; London, UK</p>
+              </div>
+              <span class="timeline-date">Jun 2023 – Sep 2023</span>
+            </div>
+            <ul>
+              <li>Led a project team of four trainees — sprint planning, task delegation, and code reviews</li>
+              <li>Delivered a full-stack web application using Java and Spring Boot on schedule within an Agile framework</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects">
+    <div class="container">
+      <h2 class="section-title">Projects</h2>
+      <div class="projects-grid">
+
+        <div class="project-card featured">
+          <div class="project-badge">Featured</div>
+          <h3>Algorithmic Strategy Backtester</h3>
+          <p>Modular backtesting framework in Python to evaluate systematic trading strategies on S&P 500 historical data. Implemented Mean Reversion and Momentum strategies with risk-adjusted metrics (Sharpe, Beta, Max Drawdown).</p>
+          <div class="project-tags"><span>Python</span><span>Pandas</span><span>Quantitative Finance</span><span>Trading</span></div>
+        </div>
+
+        <div class="project-card featured">
+          <div class="project-badge">Featured</div>
+          <h3>Black-Scholes Options Pricing Engine</h3>
+          <p>European options pricing tool with full Greek sensitivity analysis. Analysed volatility shifts and time decay impact on hedging exposures and implications for market-makers managing delta and vega risk.</p>
+          <div class="project-tags"><span>Python</span><span>Derivatives</span><span>Greeks</span><span>Risk</span></div>
+        </div>
+
+        <div class="project-card">
+          <h3>Real-Time Macro &amp; Yield Curve Dashboard</h3>
+          <p>Streamlit dashboard integrating live US Treasury yield and inflation data via APIs. Visualised yield curve steepening/flattening to interpret macro regime shifts and connect trends to asset price sensitivity.</p>
+          <div class="project-tags"><span>Python</span><span>Streamlit</span><span>APIs</span><span>Macro</span></div>
+        </div>
+
+        <div class="project-card">
+          <h3>Credit Default Prediction Model</h3>
+          <p>Classification model estimating borrower probability of default using financial ratio data. Applied logistic regression and random forest with feature engineering and cross-validation to support risk-based lending decisions.</p>
+          <div class="project-tags"><span>Python</span><span>Scikit-learn</span><span>Credit Risk</span><span>ML</span></div>
+        </div>
+
+        <div class="project-card">
+          <h3>AI-Based Virality Prediction Engine</h3>
+          <p>Final year project at Brunel — analysed thousands of viral social media posts using NLP. Built deep-learning models identifying behavioural engagement drivers, producing data-driven content recommendations.</p>
+          <div class="project-tags"><span>Python</span><span>NLP</span><span>Deep Learning</span><span>LLMs</span></div>
+        </div>
+
+        <div class="project-card">
+          <h3>JPMorgan Quantitative Research Simulation</h3>
+          <p>Analysed structured loan portfolio to estimate customer probability of default. Applied dynamic programming to transform FICO score distributions into categorical predictors for credit risk exposure.</p>
+          <div class="project-tags"><span>Quantitative Research</span><span>PD Modelling</span><span>Python</span></div>
+        </div>
+
+        <div class="project-card">
+          <h3>Goldman Sachs Risk Job Simulation</h3>
+          <p>Conducted structured financial risk analysis — evaluated leverage, liquidity, and repayment capacity under stressed scenarios. Recommended mitigation strategies balancing risk-return trade-offs.</p>
+          <div class="project-tags"><span>Risk Analysis</span><span>Stress Testing</span><span>Finance</span></div>
+        </div>
+
+        <div class="project-card">
+          <h3>BCG Data Science Simulation</h3>
+          <p>Customer churn analysis for XYZ Analytics. Engineered a Random Forest model achieving 50% recall on churn prediction. Delivered executive summary with actionable insights for senior decision-makers.</p>
+          <div class="project-tags"><span>Python</span><span>Random Forest</span><span>Churn</span><span>BCG</span></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills -->
+  <section id="skills">
+    <div class="container">
+      <h2 class="section-title">Skills</h2>
+      <div class="skills-grid">
+
+        <div class="skill-category">
+          <h4>Programming &amp; Data</h4>
+          <div class="skill-list">
+            <div class="skill-item"><span>Python</span><div class="skill-bar"><div style="width:95%"></div></div></div>
+            <div class="skill-item"><span>SQL</span><div class="skill-bar"><div style="width:80%"></div></div></div>
+            <div class="skill-item"><span>R</span><div class="skill-bar"><div style="width:75%"></div></div></div>
+            <div class="skill-item"><span>C++</span><div class="skill-bar"><div style="width:65%"></div></div></div>
+            <div class="skill-item"><span>Java</span><div class="skill-bar"><div style="width:70%"></div></div></div>
+            <div class="skill-item"><span>Ada/SPARK</span><div class="skill-bar"><div style="width:85%"></div></div></div>
+          </div>
+        </div>
+
+        <div class="skill-category">
+          <h4>Quantitative Finance</h4>
+          <div class="skill-pills">
+            <span>Monte Carlo Simulation</span>
+            <span>Stochastic Calculus</span>
+            <span>Black-Scholes</span>
+            <span>Greeks Analysis</span>
+            <span>VaR &amp; CVaR</span>
+            <span>Yield Curve Analysis</span>
+            <span>Time-Series Analysis</span>
+            <span>Derivatives Pricing</span>
+            <span>Systematic Trading</span>
+            <span>Stress Testing</span>
+          </div>
+        </div>
+
+        <div class="skill-category">
+          <h4>Machine Learning</h4>
+          <div class="skill-pills">
+            <span>Scikit-learn</span>
+            <span>TensorFlow</span>
+            <span>Random Forest</span>
+            <span>Logistic Regression</span>
+            <span>NLP</span>
+            <span>Feature Engineering</span>
+            <span>Model Validation</span>
+            <span>PD Modelling</span>
+          </div>
+        </div>
+
+        <div class="skill-category">
+          <h4>Tools &amp; Platforms</h4>
+          <div class="skill-pills">
+            <span>Bloomberg Terminal</span>
+            <span>Streamlit</span>
+            <span>Tableau</span>
+            <span>Power BI</span>
+            <span>Git</span>
+            <span>Excel / VBA</span>
+            <span>Spring Boot</span>
+            <span>AWS (Foundations)</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Leadership -->
+  <section id="leadership">
+    <div class="container">
+      <h2 class="section-title">Leadership &amp; Volunteering</h2>
+      <div class="leadership-grid">
+        <div class="leadership-card">
+          <div class="l-icon">&#127891;</div>
+          <h4>PAL Leader</h4>
+          <p class="l-org">Brunel University London</p>
+          <p>Selected for strong academic performance to lead weekly study sessions for 30+ first-year Computer Science students, facilitating collaborative learning environments.</p>
+        </div>
+        <div class="leadership-card">
+          <div class="l-icon">&#127968;</div>
+          <h4>Volunteer &amp; Youth Mentor</h4>
+          <p class="l-org">Hari Sumerian UK &mdash; Present</p>
+          <p>Organised and executed sporting events for 100+ participants. Deliver spiritual discourses and mentorship to teenagers on academic and personal challenges.</p>
+        </div>
+        <div class="leadership-card">
+          <div class="l-icon">&#128101;</div>
+          <h4>Onboarding Buddy</h4>
+          <p class="l-org">Capgemini</p>
+          <p>Accelerated new-joiner integration by providing one-on-one support for IT setup, administrative tasks, and understanding team processes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <div class="container">
+      <h2 class="section-title">Get In Touch</h2>
+      <p class="contact-sub">I'm open to quant finance roles, software engineering opportunities, and collaborative projects. Feel free to reach out.</p>
+      <div class="contact-links">
+        <a href="mailto:divy.chauhan36@gmail.com" class="contact-card">
+          <div class="contact-icon">&#9993;</div>
+          <h4>Email</h4>
+          <p>divy.chauhan36@gmail.com</p>
+        </a>
+        <a href="https://www.linkedin.com/in/divy-chauhan" target="_blank" class="contact-card">
+          <div class="contact-icon">&#128279;</div>
+          <h4>LinkedIn</h4>
+          <p>linkedin.com/in/divy-chauhan</p>
+        </a>
+        <a href="tel:+447533277755" class="contact-card">
+          <div class="contact-icon">&#128222;</div>
+          <h4>Phone</h4>
+          <p>+44 7533 277755</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>Divy Chauhan &copy; 2026 &mdash; Built with passion in London</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
